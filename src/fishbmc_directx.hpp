@@ -8,7 +8,7 @@
 // declare a global texture
 // declare other globals you may need
 
-void init (VIS_PROPS* vis_props)
+void init (int x, int y, int w, int h, void* device, float ratio)
 {
     // take anything from the VIS_PROPS struct
 }

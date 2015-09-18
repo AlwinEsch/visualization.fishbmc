@@ -12,7 +12,7 @@ GLuint      g_texture;
 
 
 // OpenGL: ignores VIS_PROPS
-void init (VIS_PROPS*) {}
+void init (int x, int y, int w, int h, void* device, float ratio) {}
 
 // OpenGL: texture initialization
 inline void init_texture (int width, int height, uint32_t* pixels)

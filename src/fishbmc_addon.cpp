@@ -147,15 +147,10 @@ extern "C" ADDON_STATUS ADDON_Create (void* hdl, void* props)
 
     VIS_PROPS* visProps = (VIS_PROPS*) props;
 
-    init (visProps);
-
     g_fische = fische_new();
     g_fische->on_beat = &on_beat;
     g_fische->pixel_format = FISCHE_PIXELFORMAT_0xAABBGGRR;
     g_fische->line_style = FISCHE_LINESTYLE_THICK;
-    g_aspect = double (visProps->width) / double (visProps->height);
-    g_texleft = (2 - g_aspect) / 4;
-    g_texright = 1 - g_texleft;
     g_framedivisor = 1;
     g_filemode = false;
     g_size = 128;
@@ -163,9 +158,12 @@ extern "C" ADDON_STATUS ADDON_Create (void* hdl, void* props)
     return ADDON_STATUS_NEED_SETTINGS;
 }
 
-extern "C" void Start (int, int, int, const char*)
+extern "C" void Start (int, int, int w, int h, void*, float, int, int, int, const char*)
 {
     g_errorstate = false;
+    g_aspect = double (w) / double (h);
+    g_texleft = (2 - g_aspect) / 4;
+    g_texright = 1 - g_texleft;
 
     g_fische->audio_format = FISCHE_AUDIOFORMAT_FLOAT;
 
@@ -305,16 +303,15 @@ extern "C" unsigned int GetSubModules (char ***names)
 
 extern "C" void ADDON_Stop()
 {
+}
+
+extern "C" void ADDON_Destroy()
+{
     fische_free (g_fische);
     g_fische = 0;
     delete_texture();
     delete [] g_axis;
     g_axis = 0;
-}
-
-extern "C" void ADDON_Destroy()
-{
-    return;
 }
 
 extern "C" bool ADDON_HasSettings()
